@@ -18,6 +18,8 @@ var config = {
     var role = $('#role').val().trim();
     var date = $('#startDate').val().trim();
     var rate = $('#rate').val().trim();
+    var time = moment().diff(moment(date , "MMDDYYYY"),'months')
+    var bill = parseInt(rate)*parseInt(time)
   
       
     database.ref("users").push({
@@ -25,6 +27,8 @@ var config = {
       role: role,
       date: date,
       rate: rate,
+      time: time,
+      bill: bill
   })
   })
   database.ref("users").on("child_added", function(snapshot) {
@@ -33,14 +37,16 @@ var config = {
     var roleX = snapshot.val().role;
     var dateX = snapshot.val().date;
     var rateX = snapshot.val().rate;
+    var timeX = snapshot.val().time;
+    var billX = snapshot.val().bill
   
     var newRow = $("<tr>");
     var newUser = $("<td>" + userX + "</td>");
     var newRole = $("<td>" + roleX + "</td>");
     var newDate = $("<td>" + dateX + "</td>");
-    var monthsWorked = $("<td>" + "" + "</td>");
+    var monthsWorked = $("<td>" + timeX + "</td>");
     var monthlyRate = $("<td>" + rateX + "</td>");
-    var totalBilled = $("<td>" + "" + "</td>");
+    var totalBilled = $("<td>" + billX + "</td>");
   
   newRow.append(newUser).append(newRole).append(newDate).append(monthsWorked).append(monthlyRate).append(totalBilled);
   
@@ -54,4 +60,3 @@ var config = {
   // $('#roleDisplay').text(sv.role)
   // $('#startDateDisplay').text(sv.date)
   // $('#rateDisplay').text(sv.rate)
-  
